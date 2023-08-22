@@ -29,6 +29,7 @@
         <module>department-service</module>
         <module>organization-service</module>
         <module>gateway-service</module>
+        <module>model</module>
     </modules>
 
     <dependencyManagement>
@@ -42,14 +43,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

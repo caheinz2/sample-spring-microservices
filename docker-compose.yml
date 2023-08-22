@@ -38,9 +38,12 @@ services:
     depends_on:
       discovery-service:
         condition: service_healthy
+      mysql:
+        condition: service_healthy
     links:
       - config-service
       - discovery-service
+      - mysql
       - zipkin
     environment:
       SPRING_PROFILES_ACTIVE: docker
@@ -51,10 +54,13 @@ services:
     depends_on:
       discovery-service:
         condition: service_healthy
+      mysql:
+        condition: service_healthy
     links:
       - config-service
       - discovery-service
       - employee-service
+      - mysql
       - zipkin
     environment:
       SPRING_PROFILES_ACTIVE: docker
@@ -65,11 +71,14 @@ services:
     depends_on:
       discovery-service:
         condition: service_healthy
+      mysql:
+        condition: service_healthy
     links:
       - config-service
+      - department-service
       - discovery-service
       - employee-service
-      - department-service
+      - mysql
       - zipkin
     environment:
       SPRING_PROFILES_ACTIVE: docker
@@ -89,3 +98,20 @@ services:
       - department-service
       - organization-service
       - zipkin
+  mysql:
+    image: mysql:8.1
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=dev
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=dev
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    security_opt:
+      - seccomp:unconfined
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
