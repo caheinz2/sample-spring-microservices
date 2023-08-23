@@ -56,6 +56,10 @@ springdoc:
         url: /v3/api-docs/organization
 
 management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
   tracing:
     sampling:
       probability: 1.0
