@@ -46,3 +46,8 @@ The following picture illustrates the architecture described above.
 
 <img src="https://piotrminkowski.files.wordpress.com/2018/04/spring-cloud-1.png" title="Architecture"><br/>
 
+
+## Commands
+* Build services - `$ mvn clean package -Pbuild-image`
+* Deploy - `$ docker-compose up -d`
+* Deploy with scale - `$ docker-compose up --scale <service_name>=<#_of_instances> -d`

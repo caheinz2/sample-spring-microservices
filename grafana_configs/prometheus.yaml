@@ -3,13 +3,35 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  - job_name: 'prometheus'
+  - job_name: prometheus
     static_configs:
-      - targets: [ 'localhost:9090' ]
-  - job_name: 'tempo'
+      - targets: [ localhost:9090 ]
+  - job_name: tempo
     static_configs:
-      - targets: [ 'tempo:3200' ]
-  - job_name: 'spring_boot_services'
-    metrics_path: '/actuator/prometheus'
+      - targets: [ tempo:3200 ]
+  - job_name: docker
     static_configs:
-      - targets: [ 'employee-service:8080', 'department-service:8080', 'organization-service:8080', 'discovery-service:8061', 'gateway-service:8060' ]
+      - targets: [ localhost:9323 ]
+  - job_name: docker_containers
+    metrics_path: /actuator/prometheus
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        filters:
+          - name: label
+            values:
+            - metrics-enabled
+    relabel_configs:
+      - source_labels: [ __meta_docker_container_name ]
+        regex: /(.*)
+        target_label: container_name
+      - source_labels: [ __meta_docker_container_id ]
+        regex: (.*)
+        target_label: container_id
+      - source_labels: [ __meta_docker_network_name ]
+        regex: (.*)
+        target_label: network_name
+
+  #- job_name: spring_boot_services
+  #  metrics_path: /actuator/prometheus
+  #  static_configs:
+  #    - targets: [ employee-service:8080, department-service:8080, organization-service:8080, discovery-service:8061, gateway-service:8060 ]
