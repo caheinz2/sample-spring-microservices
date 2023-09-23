@@ -23,6 +23,8 @@ services:
       retries: 3
     environment:
       SPRING_PROFILES_ACTIVE: docker
+    labels:
+      - metrics-enabled
   employee-service:
     image: piomin/employee-service:1.2-SNAPSHOT
     ports:
@@ -34,6 +36,8 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: docker
+    labels:
+      - metrics-enabled
   department-service:
     image: piomin/department-service:1.2-SNAPSHOT
     ports:
@@ -45,6 +49,8 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: docker
+    labels:
+      - metrics-enabled
   organization-service:
     image: piomin/organization-service:1.2-SNAPSHOT
     ports:
@@ -56,6 +62,8 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: docker
+    labels:
+      - metrics-enabled
   gateway-service:
     image: piomin/gateway-service:1.1-SNAPSHOT
     ports:
@@ -65,6 +73,8 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: docker
+    labels: 
+      - metrics-enabled
   mysql:
     image: mysql:8.1
     ports:
@@ -102,8 +112,10 @@ services:
       - --enable-feature=exemplar-storage
     volumes:
       - ./grafana_configs/prometheus.yaml:/etc/prometheus.yaml
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "9090:9090"
+    user: root # required for docker.sock
   loki:
     image: grafana/loki:2.8.0
     ports:
