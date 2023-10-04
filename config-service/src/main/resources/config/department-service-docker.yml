@@ -25,18 +25,19 @@ spring:
   output:
     ansi:
       enabled: always
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  metrics:
-    tags:
-      application: ${spring.application.name}
-  tracing:
-    sampling:
-      probability: 1.0
-  zipkin:
-    tracing:
-      endpoint: http://tempo:9411/api/v2/spans
+# First Step
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  metrics:
+#    tags:
+#      application: ${spring.application.name}
+#  tracing:
+#    sampling:
+#      probability: 1.0
+#  Third Step
+#  zipkin:
+#    tracing:
+#      endpoint: http://tempo:9411/api/v2/spans
